@@ -200,7 +200,7 @@ for (truncation in truncation_vec) {
 
 
 
-
+#--------------------Figure A.18-----------------------------
 
 
 for (al in 1:length(aid_lag)) {
@@ -214,9 +214,14 @@ for (al in 1:length(aid_lag)) {
       scale <- 81
       load(paste0(save_path, "res_Type1_M", mm,"_",oo,"_trun_aid_bi_inten.dat"))
       
-      m <- res$est_eval *scale
-      V <- diag(res$V_eval)*scale^2
-      x <- res$specification$eval_values
+      points.basis <- rbind(c(1,0,0,0.6),c(1,1,0.6,0.6))
+      est_diff <- points.basis%*%res$est_beta
+      est_diff_var <- points.basis%*%res$V_beta%*%t(points.basis)
+      
+      m <- est_diff*scale
+      V <- diag(est_diff_var)*scale^2
+      
+      x <- c(0,1)
       ub <- m+qnorm(c(0.975))*sqrt(V)
       lb <- m+qnorm(c(0.025))*sqrt(V)
       meaneffect <- res$mean_effect*scale
@@ -250,13 +255,14 @@ for (al in 1:length(aid_lag)) {
       axis.text.y = element_text(size = 12)   # Increase size of y-axis tick labels
     )+
     theme(legend.position = "top")+
-    scale_color_manual(values = c("With aid" = "#2C7A7B", "Without aid" = "#4D4D4D"))
+    scale_color_manual(values = c("With aid" = "#2C7A7B", "Without aid" = "#F4A261"))
   print(p)
   if(save_plot){
-    ggsave(file = paste0(save_path,"plot_binary_cate_",aid_lag_name[al],".pdf"), plot = p, width = 6, height = 3.5, units = "in", device = "pdf")
+    ggsave(file = paste0(save_path,"plot_binary_cate_inten",aid_lag_name[al],".pdf"), plot = p, width = 6, height = 3.5, units = "in", device = "pdf")
   }
-  
+
 }
+
 
 
 
@@ -275,8 +281,8 @@ for (al in 1:length(aid_lag)) {
       imedian <- sqrt(0.36)
       
       
-      est_diff <- points.basis%*%res$est_beta
-      est_diff_var <- points.basis%*%res$V_beta%*%t(points.basis)
+      est_diff <- (points.basis%*%res$est_beta)[2]
+      est_diff_var <- (points.basis%*%res$V_beta%*%t(points.basis))[2,2]
       
       m <- est_diff*scale
       V <- est_diff_var*scale^2
