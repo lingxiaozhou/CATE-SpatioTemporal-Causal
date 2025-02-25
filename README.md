@@ -5,9 +5,9 @@ This repository contains the code to reproduce the simulation and application re
 *Estimating Heterogeneous Treatment Effects for Spatio-Temporal Causal Inference: How Economic Assistance Moderates the Effects of Airstrikes on Insurgent Violence.*
 
 ## Repository Structure
-* Applications/: Contains scripts and data for real-world application studies.
-* Simulations/: Includes scripts and configurations for synthetic data simulations.
-* README.md: This file, providing an overview and instructions.
+* `Applications/`: Contains scripts and data for real-world application studies.
+* `Simulations/`: Includes scripts and configurations for synthetic data simulations.
+* `README.md`: This file, providing an overview and instructions.
 
 ### Applications Folder
 
