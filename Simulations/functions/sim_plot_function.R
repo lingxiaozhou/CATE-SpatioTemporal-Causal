@@ -1,10 +1,10 @@
-draw_estimate_all <- function(df, Effect = "13",name = name,save = FALSE,save_path = "~/"){
-  load(filename)
-  attach(res)
+draw_estimate_all <- function(df, Effect = "13",name = "s",save = FALSE,save_path = "~/"){
+  
+  
   
   line_styles <-rep("solid",7)
-  markers <- c("circle", "triangle", "square", "diamond", "triangle", "square", "diamond")
-  colors <- c("black","#e31a1c", "#ff7f00","#924A2F",  "#6a3d9a", "#1f78b4", "#33a02c") 
+  markers <- c("circle", "triangle", "square", "triangle", "square")
+  colors <- c("black","#e31a1c", "#ff7f00",  "#6a3d9a", "#1f78b4") 
   
   df$type <- factor(df$type)
   newx <- 1:10/10
@@ -27,6 +27,8 @@ draw_estimate_all <- function(df, Effect = "13",name = name,save = FALSE,save_pa
     }else{
       which_est <- "Hajek"
     }
+    
+    df <- df[!(df$curve%in%c("IPW with estimated PS (truncated)","Hajek with estimated PS (truncated)")),]
     
     # Plot using ggplot2
     p <-  ggplot(df[df$type==which_est & df$effect%in%Effect & df$time==500,], aes(y = y,x=x,color = curve, linetype = curve, shape = curve)) +
@@ -53,14 +55,14 @@ draw_estimate_all <- function(df, Effect = "13",name = name,save = FALSE,save_pa
             legend.text = element_text(size = 12),
             panel.spacing.x = unit(1.1, "lines"),
             plot.margin = margin(t = 10, r = 20, b = 10, l = -5))+
-      facet_grid(stat~M,scales="free")+scale_y_continuous(labels = function(x) paste0("\u2009", sprintf("%.3f", x)))+
-      geom_line(data = truth[truth$type=="Hajek" & truth$effect%in%Effect & truth$time==500,], 
-                aes(x = x, y = y, group = 1),  # Ensure `group` avoids unintended groupings
-                inherit.aes = FALSE,           # Prevent inheritance of aesthetics from the main ggplot call
-                color = "black",               # Use a consistent color for theoretical lines
-                linetype = "dashed",           # Distinguish theoretical lines
-                size = 0.8, 
-                show.legend = FALSE)           # Exclude from legend
+      facet_grid(stat~M,scales="free")+scale_y_continuous(labels = function(x) paste0("\u2009", sprintf("%.3f", x)))#+
+      # geom_line(data = truth[truth$type=="Hajek" & truth$effect%in%Effect & truth$time==500,],
+      #           aes(x = x, y = y, group = 1),  # Ensure `group` avoids unintended groupings
+      #           inherit.aes = FALSE,           # Prevent inheritance of aesthetics from the main ggplot call
+      #           color = "black",               # Use a consistent color for theoretical lines
+      #           linetype = "dashed",           # Distinguish theoretical lines
+      #           size = 0.8,
+      #           show.legend = FALSE)           # Exclude from legend
     
     print(p)
     

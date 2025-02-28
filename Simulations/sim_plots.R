@@ -1,20 +1,22 @@
 load("~/Github/CATE-SpatioTemporal-Causal/Simulations/Results/save_estimate.dat")
 source("~/Github/CATE-SpatioTemporal-Causal/Simulations/functions/sim_plot_function.R")
+save_path <- "~/GitHub/CATE-SpatioTemporal-Causal/Simulations/Results/"
+
 
 #------------------------Figure 5, A.2-A.6-----------
 
-draw_estimate_all(merged_df_st, Effect = "13",name = name,save = FALSE)
-draw_estimate_all(merged_df_st, Effect = "23",name = name,save =  FALSE)
-draw_estimate_all(merged_df_st, Effect = "12",name = name,save = FALSE)
+draw_estimate_all(merged_df_st, Effect = "13",name = "st",save = FALSE,save_path = save_path)
+draw_estimate_all(merged_df_st, Effect = "23",name = "st",save =  FALSE,save_path = save_path)
+draw_estimate_all(merged_df_st, Effect = "12",name = "st",save = FALSE,save_path = save_path)
 
 
-draw_estimate_all(merged_df_s, Effect = "13",name = name,save = FALSE)
-draw_estimate_all(merged_df_s, Effect = "23",name = name,save =  FALSE)
-draw_estimate_all(merged_df_s, Effect = "12",name = name,save = FALSE)
+draw_estimate_all(merged_df_s, Effect = "13",name = "s",save = FALSE,save_path = save_path)
+draw_estimate_all(merged_df_s, Effect = "23",name = "s",save =  FALSE,save_path = save_path)
+draw_estimate_all(merged_df_s, Effect = "12",name = "s",save = FALSE,save_path = save_path)
 
 #------------------------Figure A.1--------------------
-draw_sd_ratio(s_df_sd_ratio,name = name,save = FALSE)
-draw_sd_ratio(st_df_sd_ratio,name = name,save = FALSE)
+draw_sd_ratio(s_df_sd_ratio,name = "s",save = FALSE,save_path = save_path)
+draw_sd_ratio(st_df_sd_ratio,name = "st",save = FALSE,save_path = save_path)
 
 
 

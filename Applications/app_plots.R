@@ -5,6 +5,8 @@ library(tidyverse)
 outpath <- "~/GitHub/CATE-SpatioTemporal-Causal/Applications/Results/"
 save_plot <- FALSE
 
+aid_lag <- 1
+aid_lag_name <- c("onemonth")
 
 #--------------------------Figure 6, A.14, A.15--------------------
 
@@ -47,8 +49,6 @@ for (truncation in truncation_vec) {
       geom_point(position = position_dodge(width = 0.5)) +
       geom_errorbar(aes(ymin = lb, ymax = ub), width = 0.2, position = position_dodge(width = 0.5)) +
       geom_hline(yintercept = 0, linetype = "dashed", color = "black")+
-      geom_segment(aes(x = as.numeric(M) - 0.3, xend = as.numeric(M) + 0.3, y = Meaneff, yend = Meaneff),
-                   inherit.aes = FALSE, color = "#D55E00", linetype = "solid",linewidth=0.6) +
       facet_grid(Outcome ~ ., scales = "free_y") +
       labs(x = "", y = "CATE (District Effect)") +
       theme_bw()+
@@ -245,8 +245,6 @@ for (al in 1:length(aid_lag)) {
     geom_point(position = position_dodge(width = 0.5)) +
     geom_errorbar(aes(ymin = lb, ymax = ub), width = 0.2, position = position_dodge(width = 0.5)) +
     geom_hline(yintercept = 0, linetype = "dashed", color = "black")+
-    geom_segment(aes(x = as.numeric(M) - 0.3, xend = as.numeric(M) + 0.3, y = Meaneff, yend = Meaneff),
-                 inherit.aes = FALSE, color = "#D55E00", linetype = "solid",linewidth=0.6) +
     facet_grid(Outcome ~ ., scales = "free_y") +
     labs(x = "", y = "CATE (District Effect)") +
     theme_bw()+
