@@ -8,7 +8,7 @@ save_plot <- FALSE
 aid_lag <- 1
 aid_lag_name <- c("onemonth")
 
-#--------------------------Figure 6, A.14, A.15--------------------
+#--------------------------Figure 4, A.18, A.19--------------------
 
 truncation_vec <- c(0.9,0.95,0.98)
 for (truncation in truncation_vec) {
@@ -125,7 +125,7 @@ for (truncation in truncation_vec) {
 
 
 
-#-------------------------Figure 8, A.16, A.17-------------------------
+#-------------------------Figure 5, A.20, A.21-------------------------
 
 for (truncation in truncation_vec) {
   for (al in 1:length(aid_lag)) {
@@ -154,8 +154,6 @@ for (truncation in truncation_vec) {
     
     Mlist <- c(3,7,10)
     
-    print(max(df_plot$x))
-    print(min(df_plot$x))
     df_plot <- df_plot[df_plot$M%in%Mlist,]
     df_plot$M <- as.factor(df_plot$M)
     df_plot$x <- exp(df_plot$x)-1
@@ -200,7 +198,7 @@ for (truncation in truncation_vec) {
 
 
 
-#--------------------Figure A.18-----------------------------
+#--------------------Figure A.22-----------------------------
 
 
 for (al in 1:length(aid_lag)) {

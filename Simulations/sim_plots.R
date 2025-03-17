@@ -4,7 +4,7 @@ save_path <- "~/GitHub/CATE-SpatioTemporal-Causal/Simulations/Results/"
 
 save_plot <- FALSE
 
-#------------------------Figure 5, A.2-A.6-----------
+#------------------------Figure 3, A.5-A.10-----------
 
 draw_estimate_all(merged_df_st,truth_st, Effect = "13",name = "st",save=save_plot,save_path = save_path)
 draw_estimate_all(merged_df_st,truth_st, Effect = "23",name = "st",save=save_plot,save_path = save_path)
@@ -21,7 +21,7 @@ draw_sd_ratio(st_df_sd_ratio,name = "st",save=save_plot,save_path = save_path)
 
 
 
-#----------------------Figure A.7-----------------------
+#----------------------Figure A.11-----------------------
 markers <- c("triangle", "square")
 default_colors <- scales::hue_pal()(2)[c(1,2)]
 
@@ -58,7 +58,7 @@ st_df_sd_relative_ps %>% ggplot(aes(x = x,y=y,color = Estimator))+
 
 
 
-#--------------------------- Figure A.8----------------------
+#--------------------------- Figure A.12----------------------
 
 s_df_sd_relative_haj %>% ggplot(aes(x = x,y=y,color = M))+
   geom_point()+
