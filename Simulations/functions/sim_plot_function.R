@@ -1,3 +1,5 @@
+library(ggplot2)
+library(tidyverse)
 
 cyl_names <- c(
   `12` = 'F[h*"1"]^M ~ "vs." ~ F[h*"2"]^M',
