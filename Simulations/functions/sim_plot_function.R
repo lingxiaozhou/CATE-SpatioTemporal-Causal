@@ -1,8 +1,19 @@
-draw_estimate_all <- function(df, Effect = "13",name = "s",save = FALSE,save_path = "~/"){
+library(ggplot2)
+library(tidyverse)
+
+cyl_names <- c(
+  `12` = 'F[h*"1"]^M ~ "vs." ~ F[h*"2"]^M',
+  `13` = 'F[h*"1"]^M ~ "vs." ~ F[h*"3"]^M',
+  `23` = 'F[h*"2"]^M ~ "vs." ~ F[h*"3"]^M'
+)
+
+
+
+draw_estimate_all <- function(df,truth_df, Effect = "13",name = "s",save = FALSE,save_path = "~/"){
   
   
   
-  line_styles <-rep("solid",7)
+  line_styles <-rep("solid",5)
   markers <- c("circle", "triangle", "square", "triangle", "square")
   colors <- c("black","#e31a1c", "#ff7f00",  "#6a3d9a", "#1f78b4") 
   
@@ -20,7 +31,7 @@ draw_estimate_all <- function(df, Effect = "13",name = "s",save = FALSE,save_pat
   }
   
   
-  for (i in c(2,5)) {
+  for (i in c(2,4)) {
     
     if(i==2){
       which_est <- "IPW"
@@ -42,8 +53,8 @@ draw_estimate_all <- function(df, Effect = "13",name = "s",save = FALSE,save_pat
       geom_line(alpha = 0.7, aes(group = curve)) +
       geom_point(size = 2, alpha = 0.7, aes(shape = curve)) +  # Adjusted size and transparency for points
       scale_linetype_manual(values = line_styles) +
-      scale_shape_manual(values = markers[i:(i+2)]) +
-      scale_color_manual(values = colors[i:(i+2)]) +
+      scale_shape_manual(values = markers[i:(i+1)]) +
+      scale_color_manual(values = colors[i:(i+1)]) +
       labs(title = "",
            x = "",
            y = "") +
@@ -55,14 +66,14 @@ draw_estimate_all <- function(df, Effect = "13",name = "s",save = FALSE,save_pat
             legend.text = element_text(size = 12),
             panel.spacing.x = unit(1.1, "lines"),
             plot.margin = margin(t = 10, r = 20, b = 10, l = -5))+
-      facet_grid(stat~M,scales="free")+scale_y_continuous(labels = function(x) paste0("\u2009", sprintf("%.3f", x)))#+
-      # geom_line(data = truth[truth$type=="Hajek" & truth$effect%in%Effect & truth$time==500,],
-      #           aes(x = x, y = y, group = 1),  # Ensure `group` avoids unintended groupings
-      #           inherit.aes = FALSE,           # Prevent inheritance of aesthetics from the main ggplot call
-      #           color = "black",               # Use a consistent color for theoretical lines
-      #           linetype = "dashed",           # Distinguish theoretical lines
-      #           size = 0.8,
-      #           show.legend = FALSE)           # Exclude from legend
+      facet_grid(stat~M,scales="free")+scale_y_continuous(labels = function(x) paste0("\u2009", sprintf("%.3f", x)))+
+      geom_line(data = truth_df[truth_df$type=="Hajek" & truth_df$effect%in%Effect & truth_df$time==500,],
+                aes(x = x, y = y, group = 1),  # Ensure `group` avoids unintended groupings
+                inherit.aes = FALSE,           # Prevent inheritance of aesthetics from the main ggplot call
+                color = "black",               # Use a consistent color for theoretical lines
+                linetype = "dashed",           # Distinguish theoretical lines
+                size = 0.8,
+                show.legend = FALSE)           # Exclude from legend
     
     print(p)
     

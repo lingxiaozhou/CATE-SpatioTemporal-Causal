@@ -2,25 +2,28 @@ load("~/Github/CATE-SpatioTemporal-Causal/Simulations/Results/save_estimate.dat"
 source("~/Github/CATE-SpatioTemporal-Causal/Simulations/functions/sim_plot_function.R")
 save_path <- "~/GitHub/CATE-SpatioTemporal-Causal/Simulations/Results/"
 
+save_plot <- FALSE
 
-#------------------------Figure 5, A.2-A.6-----------
+#------------------------Figure 3, A.5-A.10-----------
 
-draw_estimate_all(merged_df_st, Effect = "13",name = "st",save = FALSE,save_path = save_path)
-draw_estimate_all(merged_df_st, Effect = "23",name = "st",save =  FALSE,save_path = save_path)
-draw_estimate_all(merged_df_st, Effect = "12",name = "st",save = FALSE,save_path = save_path)
+draw_estimate_all(merged_df_st,truth_st, Effect = "13",name = "st",save=save_plot,save_path = save_path)
+draw_estimate_all(merged_df_st,truth_st, Effect = "23",name = "st",save=save_plot,save_path = save_path)
+draw_estimate_all(merged_df_st,truth_st, Effect = "12",name = "st",save=save_plot,save_path = save_path)
 
 
-draw_estimate_all(merged_df_s, Effect = "13",name = "s",save = FALSE,save_path = save_path)
-draw_estimate_all(merged_df_s, Effect = "23",name = "s",save =  FALSE,save_path = save_path)
-draw_estimate_all(merged_df_s, Effect = "12",name = "s",save = FALSE,save_path = save_path)
+draw_estimate_all(merged_df_s,truth_s, Effect = "13",name = "s",save=save_plot,save_path = save_path)
+draw_estimate_all(merged_df_s,truth_s, Effect = "23",name = "s",save=save_plot,save_path = save_path)
+draw_estimate_all(merged_df_s,truth_s, Effect = "12",name = "s",save=save_plot,save_path = save_path)
 
 #------------------------Figure A.1--------------------
-draw_sd_ratio(s_df_sd_ratio,name = "s",save = FALSE,save_path = save_path)
-draw_sd_ratio(st_df_sd_ratio,name = "st",save = FALSE,save_path = save_path)
+draw_sd_ratio(s_df_sd_ratio,name = "s",save=save_plot,save_path = save_path)
+draw_sd_ratio(st_df_sd_ratio,name = "st",save=save_plot,save_path = save_path)
 
 
 
-#----------------------Figure A.7-----------------------
+#----------------------Figure A.11-----------------------
+markers <- c("triangle", "square")
+default_colors <- scales::hue_pal()(2)[c(1,2)]
 
 s_df_sd_relative_ps %>% ggplot(aes(x = x,y=y,color = Estimator))+
   geom_point()+
@@ -55,7 +58,7 @@ st_df_sd_relative_ps %>% ggplot(aes(x = x,y=y,color = Estimator))+
 
 
 
-#--------------------------- Figure A.8----------------------
+#--------------------------- Figure A.12----------------------
 
 s_df_sd_relative_haj %>% ggplot(aes(x = x,y=y,color = M))+
   geom_point()+
@@ -85,3 +88,4 @@ st_df_sd_relative_haj %>% ggplot(aes(x = x,y=y,color = M))+
   theme_bw()+
   theme(legend.position = "top")+
   labs(color = "", shape = "")
+
