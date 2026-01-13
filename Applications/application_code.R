@@ -1,4 +1,4 @@
-library(geocausal)
+library(geocausal) # version 0.3.4
 library(splines)
 library(spatstat)
 library(tidyverse)
@@ -37,7 +37,7 @@ names(dat_hfr)[names(dat_hfr) == "all_combined.1"] <- "all_outcome"
 
 
 #-------------------------transform covariates-----------------
-
+# dataset version 4.0
 # cities
 cities_dist <- dataverse::get_dataframe_by_name(
   filename = "cities_dist.rds", dataset = "doi:10.7910/DVN/IU8RQK",
