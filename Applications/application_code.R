@@ -38,30 +38,36 @@ names(dat_hfr)[names(dat_hfr) == "all_combined.1"] <- "all_outcome"
 
 #-------------------------transform covariates-----------------
 # dataset version 4.0
+library(httr)
+
+# helper function for loading data
+read_dataverse_rds <- function(fileid, server = "https://dataverse.harvard.edu") {
+  tf <- tempfile(fileext = ".rds")
+  httr::GET(
+    paste0(server, "/api/access/datafile/", fileid),
+    query = list(format = "original"),
+    httr::write_disk(tf, overwrite = TRUE)
+  ) |> httr::stop_for_status()
+  readRDS(tf)
+}
+
+
 # cities
-cities_dist <- dataverse::get_dataframe_by_name(
-  filename = "cities_dist.rds", dataset = "doi:10.7910/DVN/IU8RQK",
-  server = "dataverse.harvard.edu", .f = readRDS, original = TRUE)
+cities_dist <- read_dataverse_rds(8079278)
 cities_dist <- lapply(1:5, function(x) exp(-(2 * x) * cities_dist$distance[[x]]))
 dat_hfr$all_cities <- cities_dist[[1]] + cities_dist[[2]] + 
   cities_dist[[3]] + cities_dist[[4]] + cities_dist[[5]]
 
 # rivers
-rivers_dist <- dataverse::get_dataframe_by_name(
-  filename = "rivers_dist.rds", dataset = "doi:10.7910/DVN/IU8RQK",
-  server = "dataverse.harvard.edu", .f = readRDS, original = TRUE)
+rivers_dist   <- read_dataverse_rds(8079275)
 dat_hfr$rivers_dist <- exp(-3 * rivers_dist)
 
 # routes
-routes_dist <- dataverse::get_dataframe_by_name(
-  filename = "routes_dist.rds", dataset = "doi:10.7910/DVN/IU8RQK",
-  server = "dataverse.harvard.edu", .f = readRDS, original = TRUE)
+routes_dist <- read_dataverse_rds(8079274)
 dat_hfr$routes_dist <- exp(-3 * routes_dist)
 
 # settles
-settle_dist <- dataverse::get_dataframe_by_name(
-  filename = "settle_dist.rds", dataset = "doi:10.7910/DVN/IU8RQK",
-  server = "dataverse.harvard.edu", .f = readRDS, original = TRUE)
+settle_dist <- read_dataverse_rds(8079279)
 for (jj in 1 : 18) {
   dat_hfr$settles <- exp(-12 * settle_dist$distance[[jj]])
   col_name <- paste0("settles_dist_", jj)
@@ -155,17 +161,11 @@ dat_hfr$hist_sof_30 <- purrr::map(lapply(dat_hfr$hist_sof_30, get_prior_hist,
 
 #-------------------other covariate--------------------------
 
-
-iraq_district <- dataverse::get_dataframe_by_name(
-  filename = "iraq_dist_shapefile.rds", dataset = "doi:10.7910/DVN/IU8RQK",
-  server = "dataverse.harvard.edu", .f = readRDS, original = TRUE)
+iraq_district <- read_dataverse_rds(8138903)
 iraq_district <- sf::st_as_sf(iraq_district)
 
+aid_district <- read_dataverse_rds(8079277)
 
-
-aid_district <- dataverse::get_dataframe_by_name(
-  filename = "aid_district.rds", dataset = "doi:10.7910/DVN/IU8RQK",
-  server = "dataverse.harvard.edu", .f = readRDS, original = TRUE)
 
 
 
@@ -196,9 +196,8 @@ dat_hfr$aid <- lapply(dat_hfr$time, get_aid)
 
 
 # get ethnicity
-ethnicity <- dataverse::get_dataframe_by_name(
-  filename = "ethnicity.rds", dataset = "doi:10.7910/DVN/IU8RQK",
-  server = "dataverse.harvard.edu", .f = readRDS, original = TRUE)
+ethnicity <- read_dataverse_rds(8079276)
+
 
 
 # get log population
@@ -497,29 +496,21 @@ names(dat_hfr_baseline)[names(dat_hfr_baseline) == "all_combined.1"] <- "all_out
 #-------------------------transform covariates-----------------
 
 # cities
-cities_dist <- dataverse::get_dataframe_by_name(
-  filename = "cities_dist.rds", dataset = "doi:10.7910/DVN/IU8RQK",
-  server = "dataverse.harvard.edu", .f = readRDS, original = TRUE)
+cities_dist   <- read_dataverse_rds(8079278)
 cities_dist <- lapply(1:5, function(x) exp(-(2 * x) * cities_dist$distance[[x]]))
 dat_hfr_baseline$all_cities <- cities_dist[[1]] + cities_dist[[2]] + 
   cities_dist[[3]] + cities_dist[[4]] + cities_dist[[5]]
 
 # rivers
-rivers_dist <- dataverse::get_dataframe_by_name(
-  filename = "rivers_dist.rds", dataset = "doi:10.7910/DVN/IU8RQK",
-  server = "dataverse.harvard.edu", .f = readRDS, original = TRUE)
+rivers_dist   <- read_dataverse_rds(8079275)
 dat_hfr_baseline$rivers_dist <- exp(-3 * rivers_dist)
 
 # routes
-routes_dist <- dataverse::get_dataframe_by_name(
-  filename = "routes_dist.rds", dataset = "doi:10.7910/DVN/IU8RQK",
-  server = "dataverse.harvard.edu", .f = readRDS, original = TRUE)
+routes_dist   <- read_dataverse_rds(8079274)
 dat_hfr_baseline$routes_dist <- exp(-3 * routes_dist)
 
 # settles
-settle_dist <- dataverse::get_dataframe_by_name(
-  filename = "settle_dist.rds", dataset = "doi:10.7910/DVN/IU8RQK",
-  server = "dataverse.harvard.edu", .f = readRDS, original = TRUE)
+settle_dist   <- read_dataverse_rds(8079279)
 for (jj in 1 : 18) {
   dat_hfr_baseline$settles <- exp(-12 * settle_dist$distance[[jj]])
   col_name <- paste0("settles_dist_", jj)
@@ -610,9 +601,7 @@ dat_hfr_baseline$hist_sof_7 <- purrr::map(lapply(dat_hfr_baseline$hist_sof_7, ge
 dat_hfr_baseline$hist_sof_30 <- purrr::map(lapply(dat_hfr_baseline$hist_sof_30, get_prior_hist, 
                                                   prior_coef = 6, window = iraq_window), 1)
 # get ethnicity
-ethnicity <- dataverse::get_dataframe_by_name(
-  filename = "ethnicity.rds", dataset = "doi:10.7910/DVN/IU8RQK",
-  server = "dataverse.harvard.edu", .f = readRDS, original = TRUE)
+ethnicity <- read_dataverse_rds(8079276)
 
 
 # get log population
