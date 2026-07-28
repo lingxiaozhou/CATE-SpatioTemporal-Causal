@@ -2,7 +2,7 @@
 
 This repository contains the code to reproduce the simulation and application results from the manuscript:
 
-*Estimating Heterogeneous Treatment Effects for Spatio-Temporal Causal Inference: How Economic Assistance Moderates the Effects of Airstrikes on Insurgent Violence.*
+*Estimating Heterogeneous Treatment Effects for Spatio-Temporal Causal Inference*
 
 ## Repository Structure
 * `Applications/`: Contains scripts and data for real-world application studies.
@@ -29,7 +29,7 @@ This repository contains the code to reproduce the simulation and application re
 
 To run the scripts, ensure the following R packages are installed:
 
-- `geocausal` (Version 0.3.2)
+- `geocausal` (Version 0.3.4)
 - `spatstat` (Version 3.3-0)
 - `tidyverse` (Version 2.0.0)
 - `splines` (Version 4.4.0)
