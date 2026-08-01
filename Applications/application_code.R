@@ -400,73 +400,6 @@ for (truncation in truncation_vec) {
 
 
 
-
-
-
-
-#-------------------Binary aid analysis+intensity------------------------------
-for (al in 1:length(aid_lag)) {
-  cat("Start al: ",al, "\n")
-  
-  save_path <- paste0(outpath,aid_lag_name[al],"/")
-  
-  
-  load(paste0(outpath,"phi_im.dat"))
-  for (oo in c("SAF","IED")) {
-    for (mm in 1:10) {
-      if(file.exists(paste0(save_path, "res_Type1_M", mm,"_",oo,"_trun_aid_bi_inten.dat"))){
-        cat("Exist!\n")
-      }else{
-
-        em <- get_em_vec(dat_hfr$aid[31:499],time_after = TRUE,lag=mm,entire_window = NULL,dimyx = c(128,128))
-        em <- em>0
-        E.basis <- matrix(em,ncol = 1)
-
-        
-        
-        
-        inten <- rep(c(as.matrix(phi_im6-phi_im1)),length(31:(498-mm+1)))
-        inten <- sqrt(inten)
-        imedian <- median(unique(c(as.matrix(phi_im6-phi_im1))),na.rm=T)
-        imedian <- sqrt(imedian)
-        E.basis <- cbind(E.basis,inten,E.basis*inten)
-        
-        points <- c(1)
-        #points.basis <- cbind(1,points)
-        points.basis <- cbind(points,imedian,imedian)
-        #points.basis <- cbind(points,0.01,0.01)
-        
-        if(oo=="IED"){
-          pixel_count_out <- dat_hfr$pixel_count_IED[31:499]
-        }else{
-          pixel_count_out <- dat_hfr$pixel_count_SAF[31:499]
-        }
-        
-        
-        cat("Start M=",mm,"Outcome: ",oo,"\n")
-        res <- get_cate(obs=obs_density, cf1 = cf_1, cf2 = cf_6, treat = dat_hfr$Airstrike[31:499], pixel_count_out=pixel_count_out,lag=mm, trunc_level=0.95, time_after=TRUE,entire_window = iraq_window,
-                        E_list = dat_hfr$aid[31:499],E_mat = E.basis,
-                        nbase = 6, spline_type = "ns",intercept = TRUE,
-                        eval_values = points, eval_mat = points.basis)
-        plot(res)
-        points.basis <- cbind(0,points.basis)
-        
-        est_diff <- points.basis%*%res$est_beta
-        est_diff_var <- points.basis%*%res$V_beta%*%t(points.basis)
-        
-        (est_diff+qnorm(c(0.025,0.975))*sqrt(est_diff_var))*81
-        
-        save(res,est_diff,est_diff_var,file = paste0(save_path, "res_Type1_M", mm,"_",oo,"_trun_aid_bi_inten.dat"))
-      }
-      
-    }
-    
-  }
-  
-  
-}
-
-
 #------------------------Adaptive intervention-----------------------------------
 
 outpath <- "~/GitHub/CATE-SpatioTemporal-Causal/Applications/Results/adaptive/"
@@ -2562,3 +2495,75 @@ for (truncation in truncation_vec) {
 }
 
 apply(gamma_beta, c(1,2), max, na.rm = TRUE)
+
+
+
+
+
+
+
+
+
+
+
+#-------------------Binary aid analysis+intensity------------------------------
+for (al in 1:length(aid_lag)) {
+  cat("Start al: ",al, "\n")
+  
+  save_path <- paste0(outpath,aid_lag_name[al],"/")
+  
+  
+  load(paste0(outpath,"phi_im.dat"))
+  for (oo in c("SAF","IED")) {
+    for (mm in 1:10) {
+      if(file.exists(paste0(save_path, "res_Type1_M", mm,"_",oo,"_trun_aid_bi_inten.dat"))){
+        cat("Exist!\n")
+      }else{
+        
+        em <- get_em_vec(dat_hfr$aid[31:499],time_after = TRUE,lag=mm,entire_window = NULL,dimyx = c(128,128))
+        em <- em>0
+        E.basis <- matrix(em,ncol = 1)
+        
+        
+        
+        
+        inten <- rep(c(as.matrix(phi_im6-phi_im1)),length(31:(498-mm+1)))
+        inten <- sqrt(inten)
+        imedian <- median(unique(c(as.matrix(phi_im6-phi_im1))),na.rm=T)
+        imedian <- sqrt(imedian)
+        E.basis <- cbind(E.basis,inten,E.basis*inten)
+        
+        points <- c(1)
+        #points.basis <- cbind(1,points)
+        points.basis <- cbind(points,imedian,imedian)
+        #points.basis <- cbind(points,0.01,0.01)
+        
+        if(oo=="IED"){
+          pixel_count_out <- dat_hfr$pixel_count_IED[31:499]
+        }else{
+          pixel_count_out <- dat_hfr$pixel_count_SAF[31:499]
+        }
+        
+        
+        cat("Start M=",mm,"Outcome: ",oo,"\n")
+        res <- get_cate(obs=obs_density, cf1 = cf_1, cf2 = cf_6, treat = dat_hfr$Airstrike[31:499], pixel_count_out=pixel_count_out,lag=mm, trunc_level=0.95, time_after=TRUE,entire_window = iraq_window,
+                        E_list = dat_hfr$aid[31:499],E_mat = E.basis,
+                        nbase = 6, spline_type = "ns",intercept = TRUE,
+                        eval_values = points, eval_mat = points.basis)
+        plot(res)
+        points.basis <- cbind(0,points.basis)
+        
+        est_diff <- points.basis%*%res$est_beta
+        est_diff_var <- points.basis%*%res$V_beta%*%t(points.basis)
+        
+        (est_diff+qnorm(c(0.025,0.975))*sqrt(est_diff_var))*81
+        
+        save(res,est_diff,est_diff_var,file = paste0(save_path, "res_Type1_M", mm,"_",oo,"_trun_aid_bi_inten.dat"))
+      }
+      
+    }
+    
+  }
+  
+  
+}
