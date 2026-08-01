@@ -1,4 +1,4 @@
-library(geocausal) # version 0.3.4
+library(geocausal)
 library(splines)
 library(spatstat)
 library(tidyverse)
