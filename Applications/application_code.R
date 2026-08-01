@@ -1,8 +1,7 @@
 # devtools::install_github("lingxiaozhou/geocausal_fork",ref = "adaptiveIntervention")
 
+library(geocausal)
 
-
-library(geocausal) 
 library(splines)
 library(spatstat)
 library(tidyverse)

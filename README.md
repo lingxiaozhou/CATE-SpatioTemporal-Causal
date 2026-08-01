@@ -2,7 +2,7 @@
 
 This repository contains the code to reproduce the simulation and application results from the manuscript:
 
-*Estimating Heterogeneous Treatment Effects for Spatio-Temporal Causal Inference: How Economic Assistance Moderates the Effects of Airstrikes on Insurgent Violence.*
+*Estimating Heterogeneous Treatment Effects for Spatio-Temporal Causal Inference*
 
 ## Repository Structure
 * `Applications/`: Contains scripts and data for real-world application studies.
@@ -29,12 +29,18 @@ This repository contains the code to reproduce the simulation and application re
 
 To run the scripts, ensure the following R packages are installed:
 
-- `geocausal` (Version 0.3.2)
+- `geocausal` `geocausal` (development version, available at [GitHub repository](https://github.com/lingxiaozhou/geocausal_fork/tree/adaptiveIntervention))
 - `spatstat` (Version 3.3-0)
 - `tidyverse` (Version 2.0.0)
 - `splines` (Version 4.4.0)
 - `mgcv` (Version 1.9-1)
 - `abind` (Version 1.4-8)
+
+The development version of `geocausal` can be installed directly from GitHub using:
+
+```r
+devtools::install_github("lingxiaozhou/geocausal_fork", ref = "adaptiveIntervention")
+```
 
 
 
